@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Networking Tracker</h1>
+            <p class="subtitle">Track your professional connections and meetings</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="contacts">Contacts</button>
+            <button class="tab-btn" data-tab="sessions">Sessions</button>
+        </nav>
+
+        <!-- Contacts Tab -->
+        <section id="contacts-tab" class="tab-content active">
+            <div class="controls">
+                <button id="add-contact-btn" class="btn btn-primary">+ Add Contact</button>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="filter-profession">Profession:</label>
+                        <select id="filter-profession">
+                            <option value="">All Professions</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-location">Location:</label>
+                        <select id="filter-location">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-interest">Interest Area:</label>
+                        <select id="filter-interest">
+                            <option value="">All Interests</option>
+                        </select>
+                    </div>
+                    <div class="sort-group">
+                        <label for="sort-contacts">Sort by:</label>
+                        <select id="sort-contacts">
+                            <option value="name">Name</option>
+                            <option value="profession">Profession</option>
+                            <option value="location">Location</option>
+                            <option value="dateAdded">Date Added</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-contacts" placeholder="Search contacts...">
+            </div>
+            <div id="contacts-list" class="contacts-list">
+                <!-- Contacts will be rendered here -->
+            </div>
+        </section>
+
+        <!-- Sessions Tab -->
+        <section id="sessions-tab" class="tab-content">
+            <div class="controls">
+                <button id="add-session-btn" class="btn btn-primary">+ Add Session</button>
+                <div class="sort-group">
+                    <label for="sort-sessions">Sort by:</label>
+                    <select id="sort-sessions">
+                        <option value="date">Date (Newest)</option>
+                        <option value="dateOld">Date (Oldest)</option>
+                        <option value="contact">Contact Name</option>
+                    </select>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-sessions" placeholder="Search sessions...">
+            </div>
+            <div id="sessions-list" class="sessions-list">
+                <!-- Sessions will be rendered here -->
+            </div>
+        </section>
+
+        <!-- Contact Modal -->
+        <div id="contact-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="contact-modal-title">Add New Contact</h2>
+                <form id="contact-form">
+                    <input type="hidden" id="contact-id">
+                    <div class="form-group">
+                        <label for="contact-name">Name *</label>
+                        <input type="text" id="contact-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input type="email" id="contact-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone">Phone</label>
+                        <input type="tel" id="contact-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-company">Company</label>
+                        <input type="text" id="contact-company">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-profession">Profession *</label>
+                        <input type="text" id="contact-profession" required list="professions-list">
+                        <datalist id="professions-list"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-location">Location *</label>
+                        <input type="text" id="contact-location" required list="locations-list">
+                        <datalist id="locations-list"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-interests">Interest Areas (comma-separated) *</label>
+                        <input type="text" id="contact-interests" required placeholder="e.g., AI, Marketing, Startups">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-linkedin">LinkedIn Profile</label>
+                        <input type="url" id="contact-linkedin" placeholder="https://linkedin.com/in/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-notes">Notes</label>
+                        <textarea id="contact-notes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Contact</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Session Modal -->
+        <div id="session-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="session-modal-title">Add New Session</h2>
+                <form id="session-form">
+                    <input type="hidden" id="session-id">
+                    <div class="form-group">
+                        <label for="session-contact">Contact *</label>
+                        <select id="session-contact" required>
+                            <option value="">Select a contact</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="session-date">Date *</label>
+                        <input type="date" id="session-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="session-type">Meeting Type *</label>
+                        <select id="session-type" required>
+                            <option value="">Select type</option>
+                            <option value="Coffee Chat">Coffee Chat</option>
+                            <option value="Video Call">Video Call</option>
+                            <option value="Phone Call">Phone Call</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Networking Event">Networking Event</option>
+                            <option value="Business Meeting">Business Meeting</option>
+                            <option value="Lunch/Dinner">Lunch/Dinner</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="session-location">Location/Platform</label>
+                        <input type="text" id="session-location" placeholder="e.g., Zoom, Starbucks Downtown">
+                    </div>
+                    <div class="form-group">
+                        <label for="session-duration">Duration (minutes)</label>
+                        <input type="number" id="session-duration" min="1" placeholder="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="session-topics">Topics Discussed</label>
+                        <input type="text" id="session-topics" placeholder="e.g., Career advice, Project collaboration">
+                    </div>
+                    <div class="form-group">
+                        <label for="session-notes">Meeting Notes *</label>
+                        <textarea id="session-notes" rows="5" required placeholder="Key takeaways, action items, follow-ups..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="session-followup">Follow-up Action</label>
+                        <input type="text" id="session-followup" placeholder="e.g., Send article, Schedule next meeting">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Detail Modal -->
+        <div id="contact-detail-modal" class="modal">
+            <div class="modal-content modal-large">
+                <span class="close-btn">&times;</span>
+                <div id="contact-detail-content">
+                    <!-- Contact details will be rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="delete-modal" class="modal">
+            <div class="modal-content modal-small">
+                <h2>Confirm Delete</h2>
+                <p id="delete-message">Are you sure you want to delete this item?</p>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                    <button type="button" id="confirm-delete-btn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
